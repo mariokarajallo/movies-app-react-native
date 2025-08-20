@@ -1,5 +1,5 @@
 import { MovieMapper } from 'infrastucture/mappers/movie.mapper';
-import { movieApi } from '../api/movie-api';
+import { movieApi } from '../../api/movie-api';
 import { MovieDBMoviesResponse } from 'infrastucture/interfaces/moviedb-response';
 
 export const upComingMoviesAction = async () => {

@@ -1,4 +1,5 @@
-import { View, Text, Image, Pressable } from 'react-native';
+import { router } from 'expo-router';
+import { Image, Pressable } from 'react-native';
 import Animated, { useAnimatedStyle, withTiming, useSharedValue } from 'react-native-reanimated';
 
 interface Props {
@@ -26,6 +27,9 @@ const MoviePoster = ({ poster, id, smallPoster = false, className }: Props) => {
         }}
         onPressOut={() => {
           opacity.value = withTiming(1, { duration: 150 });
+        }}
+        onPress={() => {
+          router.push(`/movie/${id}`);
         }}>
         <Image
           source={{ uri: poster }}
