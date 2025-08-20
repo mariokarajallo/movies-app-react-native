@@ -3,9 +3,11 @@
     "name": "movies-app",
     "slug": "movies-app",
     "version": "1.0.0",
+    "scheme": "moviesapp",
 
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
     },
 
     "experiments": {
