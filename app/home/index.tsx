@@ -26,13 +26,28 @@ export default function HomeScreen() {
         <MainSlideShow movies={nowPlayingQuery.data || []} />
 
         {/* Lista horizontal de peliculas populares */}
-        <MovieHorizontalList movies={popularQuery.data || []} title="Popular" className="mb-5" />
+        <MovieHorizontalList
+          movies={popularQuery.data || []}
+          title="Popular"
+          className="mb-5"
+          loadNextPage={() => {}}
+        />
 
         {/* Lista horizontal de peliculas top rated */}
-        <MovieHorizontalList movies={topRatedQuery.data || []} title="Top Rated" className="mb-5" />
+        <MovieHorizontalList
+          movies={topRatedQuery.data?.pages.flat() || []}
+          title="Top Rated"
+          className="mb-5"
+          loadNextPage={topRatedQuery.fetchNextPage}
+        />
 
         {/* Lista horizontal de peliculas de proximos estrenos*/}
-        <MovieHorizontalList movies={upComingQuery.data || []} title="Up Coming" className="mb-5" />
+        <MovieHorizontalList
+          movies={upComingQuery.data || []}
+          title="Up Coming"
+          className="mb-5"
+          loadNextPage={() => {}}
+        />
       </View>
     </ScrollView>
   );

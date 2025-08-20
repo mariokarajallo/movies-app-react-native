@@ -1,5 +1,5 @@
 import { View, Text, FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Movie } from 'infrastucture/interfaces/movie.interface';
 import MoviePoster from './MoviePoster';
 
@@ -12,6 +12,12 @@ interface Props {
 
 const MovieHorizontalList = ({ movies, title, className, loadNextPage }: Props) => {
   const isLoading = useRef(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      isLoading.current = false;
+    }, 200);
+  }, [movies]);
 
   /**
    * Función que maneja el scroll horizontal de la lista de películas
@@ -51,7 +57,7 @@ const MovieHorizontalList = ({ movies, title, className, loadNextPage }: Props) 
       <FlatList
         horizontal
         data={movies}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={({ item }) => <MoviePoster poster={item.poster} id={item.id} smallPoster />}
         showsHorizontalScrollIndicator={false}
         onScroll={onScroll}
