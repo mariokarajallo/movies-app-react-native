@@ -1,18 +1,35 @@
 import { View, Text, useWindowDimensions, Image, Pressable } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { MovieDetails } from 'infrastucture/interfaces/movie.interface';
+import { Video } from 'infrastucture/interfaces/video.interface';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import VideoPlayer from './VideoPlayer';
 
 interface Props {
   movie: MovieDetails;
+  videos?: Video[];
 }
 
-const MovieHeader = ({ movie }: Props) => {
+const MovieHeader = ({ movie, videos = [] }: Props) => {
   const { height: screenHeight } = useWindowDimensions();
   const safeArea = useSafeAreaInsets();
+  const [isVideoPlayerVisible, setIsVideoPlayerVisible] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+
+  const handlePlayTrailer = () => {
+    const trailer =
+      videos.find((video) => video.type === 'Trailer' && video.official) ||
+      videos.find((video) => video.type === 'Trailer') ||
+      videos[0];
+
+    if (trailer) {
+      setSelectedVideo(trailer);
+      setIsVideoPlayerVisible(true);
+    }
+  };
 
   return (
     <View className="relative">
@@ -74,14 +91,14 @@ const MovieHeader = ({ movie }: Props) => {
           </Text>
 
           <View className="mb-3 flex-row items-center space-x-4">
-            <View className="bg-imdb-yellow flex-row items-center rounded-full px-3 py-1">
+            <View className="flex-row items-center rounded-full bg-imdb-yellow px-3 py-1">
               <Ionicons name="star" size={16} color="#1A1A1A" />
-              <Text className="text-imdb-dark ml-1 font-bold">{movie.rating.toFixed(1)}</Text>
+              <Text className="ml-1 font-bold text-imdb-dark">{movie.rating.toFixed(1)}</Text>
             </View>
 
-            <Text className="text-netflix-light-gray font-medium">{movie.duration} min</Text>
+            <Text className="font-medium text-netflix-light-gray">{movie.duration} min</Text>
 
-            <Text className="text-netflix-light-gray font-medium">
+            <Text className="font-medium text-netflix-light-gray">
               {movie.release_date.getFullYear()}
             </Text>
           </View>
@@ -89,16 +106,23 @@ const MovieHeader = ({ movie }: Props) => {
 
         {/* Action Buttons */}
         <View className="mb-4 flex-row items-center space-x-3">
-          <Pressable className="bg-netflix-red flex-1 flex-row items-center justify-center rounded-lg px-6 py-3">
+          <Pressable
+            onPress={handlePlayTrailer}
+            disabled={videos.length === 0}
+            className={`flex-1 flex-row items-center justify-center rounded-lg px-6 py-3 ${
+              videos.length > 0 ? 'bg-netflix-red' : 'bg-gray-600'
+            }`}>
             <Ionicons name="play" size={20} color="white" />
-            <Text className="ml-2 text-base font-semibold text-white">Reproducir</Text>
+            <Text className="ml-2 text-base font-semibold text-white">
+              {videos.length > 0 ? 'Reproducir Trailer' : 'Sin Trailer'}
+            </Text>
           </Pressable>
 
-          <Pressable className="bg-netflix-gray/30 rounded-lg p-3 backdrop-blur-sm">
+          <Pressable className="rounded-lg bg-netflix-gray/30 p-3 backdrop-blur-sm">
             <Ionicons name="add" size={24} color="white" />
           </Pressable>
 
-          <Pressable className="bg-netflix-gray/30 rounded-lg p-3 backdrop-blur-sm">
+          <Pressable className="rounded-lg bg-netflix-gray/30 p-3 backdrop-blur-sm">
             <Ionicons name="download-outline" size={24} color="white" />
           </Pressable>
         </View>
@@ -112,6 +136,18 @@ const MovieHeader = ({ movie }: Props) => {
           ))}
         </View>
       </View>
+
+      {/* Video Player Modal */}
+      {selectedVideo && (
+        <VideoPlayer
+          video={selectedVideo}
+          isVisible={isVideoPlayerVisible}
+          onClose={() => {
+            setIsVideoPlayerVisible(false);
+            setSelectedVideo(null);
+          }}
+        />
+      )}
     </View>
   );
 };
