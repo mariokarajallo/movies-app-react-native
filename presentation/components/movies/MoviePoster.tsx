@@ -69,9 +69,9 @@ const MoviePoster = ({
           <View className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/20 to-transparent" />
 
           {/* Rating badge (estilo IMDB) */}
-          {rating && (
+          {rating !== undefined && rating !== null && rating > 0 && (
             <View className="bg-imdb-yellow absolute right-2 top-2 rounded-sm px-2 py-1">
-              <Text className="text-imdb-dark text-xs font-bold">{rating.toFixed(1)}</Text>
+              <Text className="text-imdb-dark text-xs font-bold">{Number(rating).toFixed(1)}</Text>
             </View>
           )}
 
