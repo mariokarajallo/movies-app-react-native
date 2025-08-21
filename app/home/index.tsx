@@ -1,8 +1,9 @@
-import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, ActivityIndicator, ScrollView, StatusBar } from 'react-native';
 import { useMovies } from 'presentation/hooks/useMovies';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MainSlideShow from 'presentation/components/movies/MainSlideShow';
 import MovieHorizontalList from 'presentation/components/movies/MovieHorizontalList';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
   const safeArea = useSafeAreaInsets();
@@ -10,45 +11,67 @@ export default function HomeScreen() {
 
   if (nowPlayingQuery.isLoading || popularQuery.isLoading)
     return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size={40} color="indigo" />
-        <Text>Loading...</Text>
+      <View className="bg-netflix-black flex-1 items-center justify-center">
+        <ActivityIndicator size={40} color="#E50914" />
+        <Text className="text-netflix-light-gray mt-4 font-medium">Cargando...</Text>
       </View>
     );
+
   if (nowPlayingQuery.error || popularQuery.error)
-    return <Text>Error: {nowPlayingQuery.error?.message}</Text>;
+    return (
+      <View className="bg-netflix-black flex-1 items-center justify-center">
+        <Ionicons name="alert-circle" size={48} color="#E50914" />
+        <Text className="text-netflix-light-gray mt-4 px-6 text-center">
+          Error: {nowPlayingQuery.error?.message}
+        </Text>
+      </View>
+    );
 
   return (
-    <ScrollView showsVerticalScrollIndicator={true}>
-      <View className="mt-2 pb-10" style={{ paddingTop: safeArea.top }}>
-        <Text className="mb-2 px-4 text-3xl font-bold">Movies App</Text>
-        {/* Carousel de imagenes */}
-        <MainSlideShow movies={nowPlayingQuery.data || []} />
+    <View className="bg-netflix-black flex-1">
+      <StatusBar barStyle="light-content" backgroundColor="#141414" />
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
+        <View className="pb-10" style={{ paddingTop: safeArea.top + 10 }}>
+          {/* Header con logo */}
+          <View className="mb-6 flex-row items-center justify-between px-4">
+            <View className="flex-row items-center">
+              <View className="bg-netflix-red mr-3 h-8 w-8 rounded-sm" />
+              <Text className="text-2xl font-bold tracking-wide text-white">Movies</Text>
+            </View>
+            <View className="flex-row space-x-4">
+              <Ionicons name="search" size={24} color="white" />
+              <Ionicons name="notifications-outline" size={24} color="white" />
+            </View>
+          </View>
 
-        {/* Lista horizontal de peliculas populares */}
-        <MovieHorizontalList
-          movies={popularQuery.data || []}
-          title="Popular"
-          className="mb-5"
-          loadNextPage={() => {}}
-        />
+          {/* Carousel principal */}
+          <MainSlideShow movies={nowPlayingQuery.data || []} />
 
-        {/* Lista horizontal de peliculas top rated */}
-        <MovieHorizontalList
-          movies={topRatedQuery.data?.pages.flat() || []}
-          title="Top Rated"
-          className="mb-5"
-          loadNextPage={topRatedQuery.fetchNextPage}
-        />
+          {/* Secciones de películas */}
+          <View className="mt-8">
+            <MovieHorizontalList
+              movies={popularQuery.data || []}
+              title="Tendencias"
+              className="mb-8"
+              loadNextPage={() => {}}
+            />
 
-        {/* Lista horizontal de peliculas de proximos estrenos*/}
-        <MovieHorizontalList
-          movies={upComingQuery.data || []}
-          title="Up Coming"
-          className="mb-5"
-          loadNextPage={() => {}}
-        />
-      </View>
-    </ScrollView>
+            <MovieHorizontalList
+              movies={topRatedQuery.data?.pages.flat() || []}
+              title="Mejor Valoradas"
+              className="mb-8"
+              loadNextPage={topRatedQuery.fetchNextPage}
+            />
+
+            <MovieHorizontalList
+              movies={upComingQuery.data || []}
+              title="Próximos Estrenos"
+              className="mb-8"
+              loadNextPage={() => {}}
+            />
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
