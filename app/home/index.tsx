@@ -1,4 +1,11 @@
-import { View, Text, ActivityIndicator, ScrollView, StatusBar } from 'react-native';
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  ScrollView,
+  StatusBar,
+  TouchableOpacity,
+} from 'react-native';
 import { useMovies } from 'presentation/hooks/useMovies';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MainSlideShow from 'presentation/components/movies/MainSlideShow';
@@ -6,7 +13,6 @@ import MovieHorizontalList from 'presentation/components/movies/MovieHorizontalL
 import SearchModal from 'presentation/components/movies/SearchModal';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
 
 export default function HomeScreen() {
   const safeArea = useSafeAreaInsets();
