@@ -7,7 +7,7 @@ import MovieCast from 'presentation/components/movie/MovieCast';
 import { Ionicons } from '@expo/vector-icons';
 
 const MovieScreen = () => {
-  const { id } = useLocalSearchParams();
+  const { id, fromSearch } = useLocalSearchParams();
 
   const { movieQuery, castQuery, videosQuery } = useMovie(+id);
 
@@ -39,7 +39,11 @@ const MovieScreen = () => {
     <View className="flex-1 bg-netflix-black">
       <StatusBar barStyle="light-content" backgroundColor="#141414" />
       <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
-        <MovieHeader movie={movie} videos={videosQuery.data ?? []} />
+        <MovieHeader
+          movie={movie}
+          videos={videosQuery.data ?? []}
+          fromSearch={fromSearch === 'true'}
+        />
         <MovieDescription movie={movie} />
         <MovieCast cast={castQuery.data ?? []} />
       </ScrollView>

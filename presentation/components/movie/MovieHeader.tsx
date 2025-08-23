@@ -11,13 +11,24 @@ import VideoPlayer from './VideoPlayer';
 interface Props {
   movie: MovieDetails;
   videos?: Video[];
+  fromSearch?: boolean;
 }
 
-const MovieHeader = ({ movie, videos = [] }: Props) => {
+const MovieHeader = ({ movie, videos = [], fromSearch = false }: Props) => {
   const { height: screenHeight } = useWindowDimensions();
   const safeArea = useSafeAreaInsets();
   const [isVideoPlayerVisible, setIsVideoPlayerVisible] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+
+  const handleBackPress = () => {
+    if (fromSearch) {
+      // Si venimos de la pantalla de búsqueda, navegamos de vuelta a ella
+      router.push('/search');
+    } else {
+      // Si no, usamos el comportamiento por defecto
+      router.back();
+    }
+  };
 
   const handlePlayTrailer = () => {
     const trailer =
@@ -67,7 +78,7 @@ const MovieHeader = ({ movie, videos = [] }: Props) => {
         className="absolute left-0 right-0 top-0 z-10 flex-row items-center justify-between px-4"
         style={{ paddingTop: safeArea.top + 10 }}>
         <Pressable
-          onPress={() => router.back()}
+          onPress={handleBackPress}
           className="rounded-full bg-black/30 p-2 backdrop-blur-sm">
           <Ionicons name="arrow-back" size={24} color="white" />
         </Pressable>

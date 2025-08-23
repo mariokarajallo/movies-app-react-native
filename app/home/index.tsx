@@ -8,16 +8,19 @@ import {
 } from 'react-native';
 import { useMovies } from 'presentation/hooks/useMovies';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import MainSlideShow from 'presentation/components/movies/MainSlideShow';
 import MovieHorizontalList from 'presentation/components/movies/MovieHorizontalList';
-import SearchModal from 'presentation/components/movies/SearchModal';
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
 
 export default function HomeScreen() {
   const safeArea = useSafeAreaInsets();
+  const router = useRouter();
   const { nowPlayingQuery, popularQuery, topRatedQuery, upComingQuery } = useMovies();
-  const [searchModalVisible, setSearchModalVisible] = useState(false);
+
+  const handleSearchPress = () => {
+    router.push('/search');
+  };
 
   if (nowPlayingQuery.isLoading || popularQuery.isLoading)
     return (
@@ -49,7 +52,7 @@ export default function HomeScreen() {
               <Text className="text-2xl font-bold tracking-wide text-white">Movies</Text>
             </View>
             <View className="flex-row space-x-4">
-              <TouchableOpacity onPress={() => setSearchModalVisible(true)}>
+              <TouchableOpacity onPress={handleSearchPress}>
                 <Ionicons name="search" size={24} color="white" />
               </TouchableOpacity>
               <Ionicons name="notifications-outline" size={24} color="white" />
@@ -84,9 +87,6 @@ export default function HomeScreen() {
           </View>
         </View>
       </ScrollView>
-
-      {/* Modal de búsqueda */}
-      <SearchModal visible={searchModalVisible} onClose={() => setSearchModalVisible(false)} />
     </View>
   );
 }

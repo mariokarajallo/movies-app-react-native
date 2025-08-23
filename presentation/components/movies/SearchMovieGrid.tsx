@@ -9,7 +9,7 @@ interface SearchMovieGridProps {
   onLoadMore: () => void;
   isLoadingMore: boolean;
   hasMorePages: boolean;
-  onCloseModal: () => void; // Nueva prop para cerrar el modal
+  onCloseModal: () => void; // Mantenemos por compatibilidad pero ya no se usa
 }
 
 const SearchMovieGrid = ({
@@ -25,13 +25,11 @@ const SearchMovieGrid = ({
     console.log('🔍 Router.push available:', !!router.push);
 
     try {
-      // Primero cerramos el modal
-      onCloseModal();
-
-      // Luego navegamos a los detalles
-      setTimeout(() => {
-        router.push(`/movie/${movieId}`);
-      }, 100); // Pequeño delay para asegurar que el modal se cierre
+      // Navegamos a los detalles con parámetros para indicar que venimos de búsqueda
+      router.push({
+        pathname: `/movie/${movieId}`,
+        params: { fromSearch: 'true' },
+      });
 
       console.log('🔍 Navigation successful');
     } catch (error) {
