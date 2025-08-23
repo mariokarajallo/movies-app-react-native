@@ -2,6 +2,8 @@
 
 Una aplicación móvil moderna de películas desarrollada con React Native, Expo y TypeScript que ofrece una experiencia similar a Netflix con funcionalidades avanzadas de búsqueda y navegación.
 
+![preview](movie-app-demo.gif)
+
 ## 📱 Características Principales
 
 - **Interfaz inspirada en Netflix** con diseño moderno y responsive
@@ -300,8 +302,10 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 
 ## ‍ Autor
 
-**Tu Nombre** - [@tu_twitter](https://twitter.com/tu_twitter)
+**Mario Karajallo** - [Mario Karajallo](https://karajallo.com)
 
 ---
 
 ⭐ Si este proyecto te gustó, ¡dale una estrella al repositorio!
+
+⌨️ con ❤️ por [Mario Karajallo](https://karajallo.com) 😊
