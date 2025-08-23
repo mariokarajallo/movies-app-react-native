@@ -300,10 +300,6 @@ npm run web
 
 Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
-## ‍ Autor
-
-**Mario Karajallo** - [Mario Karajallo](https://karajallo.com)
-
 ---
 
 ⭐ Si este proyecto te gustó, ¡dale una estrella al repositorio!
